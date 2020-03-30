@@ -68,10 +68,16 @@
 
 <body>
     {{!! $chart->container() !!}}
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
-
     {{!! $chart->script() !!}}
+
+    {{!! $chart2->container() !!}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+    {{!! $chart2->script() !!}}
+
+    {{!! $chart3->container() !!}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+    {{!! $chart3->script() !!}}
 
 </body>
 

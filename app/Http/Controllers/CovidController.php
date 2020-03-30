@@ -26,12 +26,27 @@ class CovidController extends Controller
         //membuat chart
         $chart  = new IndonesiaProvinsiChart;
         $chart  ->labels($provinsi);
-        $chart  ->dataset('Data Positif Corona di Indonesia', 'bar', $positif)
+        $chart  ->dataset('Data Pasien Positif Corona di Indonesia', 'bar', $positif)
                 ->options([
                     'color' => '#000000',
-                    'backgroundColor' => '#000000',
+                    'backgroundColor' => 'yellow',
+                ]);
+
+        $chart2  = new IndonesiaProvinsiChart;
+        $chart2  ->labels($provinsi);
+        $chart2  ->dataset('Data Pasien Sembuh Corona di Indonesia', 'bar', $sembuh)
+                ->options([
+                    'color' => '#000000',
+                    'backgroundColor' => 'green',
+                ]);
+        $chart3  = new IndonesiaProvinsiChart;
+        $chart3  ->labels($provinsi);
+        $chart3  ->dataset('Data Pasien Meninggal Corona di Indonesia', 'bar', $meninggal)
+                ->options([
+                    'color' => '#000000',
+                    'backgroundColor' => 'red',
                 ]);
         // dd($chart);
-        return view('indonesia',compact('chart'));
+        return view('indonesia',compact(['chart','chart2','chart3']));
     }
 }
