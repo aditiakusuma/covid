@@ -67,18 +67,79 @@
 </head>
 
 <body>
-    {{!! $chart->container() !!}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
-    {{!! $chart->script() !!}}
-
-    {{!! $chart2->container() !!}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
-    {{!! $chart2->script() !!}}
-
-    {{!! $chart3->container() !!}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
-    {{!! $chart3->script() !!}}
-
+    <div class="container">
+        <div class="row">
+            <div class="col-8" id="container">
+                {{-- {{!! $chart->container() !!}} --}}
+                <script src="https://code.highcharts.com/highcharts.js"></script>
+                <script>
+                    Highcharts.chart('container', {
+                        chart: {
+                            type: 'bar'
+                        },
+                        title: {
+                            text: 'Data Covid-19 di Indonesia'
+                        },
+                        xAxis: {
+                            categories: {!! json_encode($provinsi) !!}
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'Total'
+                            }
+                        },
+                        legend: {
+                            reversed: true
+                        },
+                        plotOptions: {
+                            series: {
+                                stacking: 'normal'
+                            }
+                        },
+                        series: [{
+                            name: 'Positif',
+                            data: {!!json_encode($positif)!!}
+                        }, {
+                            name: 'Meninggal',
+                            data: {!!json_encode($meninggal)!!}
+                        }, {
+                            name: 'Sembuh',
+                            data: {!!json_encode($sembuh)!!}
+                        }]
+                    });
+                </script>
+                {{-- {{!! $chart->script() !!}} --}}
+            </div>
+            <div class="col-4">
+                <table class="table" id="covid">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Provinsi</th>
+                            <th scope="col">Positif</th>
+                            <th scope="col">Meninggal</th>
+                            <th scope="col">Sembuh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for ($i=0;$i<$tot_pro;$i++) <tr>
+                            <th align="left">{{$provinsi[$i]}}</th>
+                            <td align="right">{{$positif[$i]}}</td>
+                            <td align="right">{{$meninggal[$i]}}</td>
+                            <td align="right">{{$sembuh[$i]}}</td>
+                            </tr>
+                            @endfor
+                            <tr>
+                                <th scope="row">TOTAL</th>
+                                <td>{{$tot_pos}}</td>
+                                <td>{{$tot_men}}</td>
+                                <td>{{$tot_sem}}</td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

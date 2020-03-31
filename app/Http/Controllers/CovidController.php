@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 //butuh use HTTP
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use App\Charts\IndonesiaProvinsiChart;
 
 class CovidController extends Controller
@@ -15,38 +16,35 @@ class CovidController extends Controller
         //fungsi flatten untuk menghilangkan atribut berdasarkan level
         $suspects       = Http::get('https://api.kawalcorona.com/indonesia/provinsi')->json();
         //$suspectData    = $suspects->flatten(1)->value()->All();
-        //$suspectData = Arr::flatten($suspects,1);
-        //dd($suspects);
+        // $suspectData = Arr::pluck($suspects,'attributes');
+        // $suspectData1 = Arr::except($suspectData,'FID');
+        // dd($suspectData1);
         //melakukan pluk yaitu ambil data dengan label tertentu misal saja propinsi lihat json nya
         //pluk terbarubbisa mengambil langsung atribut di bawahnya satu level
         $provinsi   =Arr::pluck($suspects,'attributes.Provinsi');
+        $tot_pro    =collect($provinsi)->count();
         $positif    =Arr::pluck($suspects,'attributes.Kasus_Posi');
+        $tot_pos    =collect($positif)->sum();
         $sembuh     =Arr::pluck($suspects,'attributes.Kasus_Semb');
+        $tot_sem    =collect($sembuh)->sum();
         $meninggal  =Arr::pluck($suspects,'attributes.Kasus_Meni');
-        //membuat chart
-        $chart  = new IndonesiaProvinsiChart;
-        $chart  ->labels($provinsi);
-        $chart  ->dataset('Data Pasien Positif Corona di Indonesia', 'bar', $positif)
-                ->options([
-                    'color' => '#000000',
-                    'backgroundColor' => 'yellow',
-                ]);
+        $tot_men    =collect($meninggal)->sum();
 
-        $chart2  = new IndonesiaProvinsiChart;
-        $chart2  ->labels($provinsi);
-        $chart2  ->dataset('Data Pasien Sembuh Corona di Indonesia', 'bar', $sembuh)
-                ->options([
-                    'color' => '#000000',
-                    'backgroundColor' => 'green',
-                ]);
-        $chart3  = new IndonesiaProvinsiChart;
-        $chart3  ->labels($provinsi);
-        $chart3  ->dataset('Data Pasien Meninggal Corona di Indonesia', 'bar', $meninggal)
-                ->options([
-                    'color' => '#000000',
-                    'backgroundColor' => 'red',
-                ]);
-        // dd($chart);
-        return view('indonesia',compact(['chart','chart2','chart3']));
+        //dd($data);
+        
+        //membuat chart
+        // $chart  = new IndonesiaProvinsiChart;
+        // $chart  ->labels($label);
+        // $chart  ->dataset('Data Pasien Positif Corona di Indonesia', 'bar', $data);
+        return view('indonesia',compact([
+            'provinsi',
+            'positif',
+            'sembuh',
+            'meninggal',
+            'tot_pro',
+            'tot_sem',
+            'tot_pos',
+            'tot_men'
+            ]));
     }
 }
