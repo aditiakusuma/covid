@@ -63,6 +63,19 @@
         .m-b-md {
             margin-bottom: 30px;
         }
+
+        .row {
+            display: flex;
+
+        }
+
+        .col-8 {
+            flex: 1;
+        }
+
+        .col-4 {
+            flex: 0.5;
+        }
     </style>
 </head>
 
@@ -78,7 +91,7 @@
                             type: 'bar'
                         },
                         title: {
-                            text: 'Data Covid-19 di Indonesia'
+                            text: 'Total Positif {{$tot_pos}} org, Sembuh {{$tot_sem}} org dan Meninggal {{$tot_men}} org'
                         },
                         xAxis: {
                             categories: {!! json_encode($provinsi) !!}
@@ -112,7 +125,7 @@
                 {{-- {{!! $chart->script() !!}} --}}
             </div>
             <div class="col-4">
-                <table class="table" id="covid">
+                <table id="covid">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">Provinsi</th>
